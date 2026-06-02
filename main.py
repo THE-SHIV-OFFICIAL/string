@@ -1,6 +1,7 @@
 import config
 import time
 import logging
+import asyncio # ✅ Added asyncio
 from pyrogram import Client, idle
 from pyromod import listen  
 from pyrogram.errors import ApiIdInvalid, ApiIdPublishedFlood, AccessTokenInvalid
@@ -10,10 +11,8 @@ logging.basicConfig(
     level=logging.INFO, 
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
-
 logging.getLogger("pymongo").setLevel(logging.ERROR)
 
-# Initialize start time
 StartTime = time.time()
 
 # Initialize the Client
@@ -26,10 +25,10 @@ app = Client(
     plugins=dict(root="StringGenBot"),
 )
 
-if __name__ == "__main__":
+async def main():
     print("𝚂𝚝𝚛𝚊𝚗𝚐𝚎𝚛 𝚂𝚎𝚜𝚜𝚒𝚘𝚗 𝙶𝚎𝚗 𝚜𝚝𝚊𝚛𝚝𝚒𝚗𝚐...")
     try:
-        app.start()
+        await app.start() # ✅ Awaited
     except ApiIdInvalid:
         raise Exception("Your API_ID is not valid.")
     except ApiIdPublishedFlood:
@@ -40,26 +39,28 @@ if __name__ == "__main__":
         logging.error(f"An unexpected error occurred: {e}")
         raise
 
-    me = app.get_me()
+    me = await app.get_me() # ✅ Awaited
     uname = me.username
     print(f"@{uname} NOW STRANGER SESSION GEN IS READY TO GEN SESSION")
     
-    # --- LOG GROUP MESSAGE (STARTUP LOG) ---
-    # getattr use kar rahe hain taaki agar config me LOG_GROUP_ID na ho toh bot crash na kare
+    # --- LOG GROUP MESSAGE ---
     LOG_GROUP_ID = getattr(config, "LOG_GROUP_ID", None)
     
     if LOG_GROUP_ID:
         try:
-            app.send_message(
+            await app.send_message( # ✅ Awaited
                 LOG_GROUP_ID,
                 f"**🤖 ʙᴏᴛ sᴛᴀʀᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!**\n\n**✨ ʙᴏᴛ:** @{uname}\n**👤 ᴏᴡɴᴇʀ ɪᴅ:** `{config.OWNER_ID}`\n**🤞 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ➛ BETA BOT HUB.🙂❤️**"
             )
             logging.info("Startup log sent to Log Group successfully.")
         except Exception as e:
             logging.error(f"Log Group Message Failed! Make sure the bot is an Admin in the Log Group. Error: {e}")
-    # ----------------------------------------
     
-    idle()
+    await idle() # ✅ Awaited
     
-    app.stop()
+    await app.stop() # ✅ Awaited
     print("🇸 🇪 🇸 🇸 🇮 🇴 🇳  🇬 🇪 🇳 🇷 🇦 🇹 🇮 🇳 🇬  🇸 🇹 🇴 🇵 🇵 🇪 🇩...")
+
+if __name__ == "__main__":
+    # ✅ Run the async main function
+    asyncio.run(main())
