@@ -1,25 +1,22 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-import logging
+from config import MONGO_DB_URI
 
-class Database:
-    def __init__(self, uri, database_name):
-        self._client = AsyncIOMotorClient(uri)
-        self.db = self._client[database_name]
-        self.col = self.db.users
-        logging.info("MongoDB Connected Successfully!")
+# Connect to MongoDB and set the database name to "StringGenBot"
+client = AsyncIOMotorClient(MONGO_DB_URI)
+db = client["StringGenBot"]
+users_col = db["users"]
 
-    async def is_user_exist(self, user_id):
-        """Checks if a user is already in the database."""
-        user = await self.col.find_one({'_id': user_id})
-        return bool(user)
+async def add_served_user(user_id: int):
+    """Adds a user to the database if they don't already exist."""
+    is_served = await users_col.find_one({"_id": user_id})
+    if not is_served:
+        await users_col.insert_one({"_id": user_id})
+        return True
+    return False
 
-    async def add_user(self, user_id, first_name):
-        """Adds a new user to the database."""
-        if not await self.is_user_exist(user_id):
-            user_data = {
-                '_id': user_id,
-                'first_name': first_name
-            }
-            await self.col.insert_one(user_data)
-            return True # Returns True if it's a new user
-        return False # Returns False if they already exist
+async def get_served_users() -> list:
+    """Returns a list of all users in the database."""
+    users_list = []
+    async for user in users_col.find({"_id": {"$gt": 0}}):
+        users_list.append(user)
+    return users_list
