@@ -4,14 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- LOGGER SETUP ---
-logging.basicConfig(
-    format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-    handlers=[logging.FileHandler("log.txt"), logging.StreamHandler()],
-    level=logging.INFO,
-)
-LOGGER = logging.getLogger(__name__)
 # --------------------
 
 API_ID = int(getenv("API_ID", "27383453"))
@@ -21,9 +13,6 @@ BOT_TOKEN = getenv("BOT_TOKEN", "")
 OWNER_ID = int(getenv("OWNER_ID", "8418584090"))
 MONGO_DB_URI = getenv("MONGO_DB_URI", "")
 MUST_JOIN = getenv("MUST_JOIN", "betabot_hub")
-
-# ✅ Log Group ID Added
-LOG_GROUP_ID = getenv("LOG_GROUP_ID", "istubabyhothaibabyyyyyyyyyyyyyyy")
 
 # ✅ Added your new images to the list
 START_IMG_URL = [
