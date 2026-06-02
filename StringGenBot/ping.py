@@ -1,8 +1,11 @@
 import time
+import random # ✅ Added random module
 from datetime import datetime
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from config import START_IMG, SUPPORT_CHAT
+
+# ✅ Changed START_IMG to START_IMG_URL
+from config import START_IMG_URL, SUPPORT_CHAT
 
 BOT_START_TIME = time.time()
 
@@ -36,8 +39,14 @@ async def ping_handler(client: Client, message: Message):
 
     await temp.delete()
 
+    # ✅ Random image fetch logic added here
+    if isinstance(START_IMG_URL, list):
+        start_img = random.choice(START_IMG_URL)
+    else:
+        start_img = START_IMG_URL
+
     await message.reply_photo(
-        photo=START_IMG,
+        photo=start_img, # ✅ Updated to use the random image
         caption=f"""**⊚ ʜᴇʏ ʙᴀʙʏ !!
 
 ˹ sᴛʀɪɴɢ ˣ ɢᴇɴᴇʀᴀᴛᴏʀ ˼ ɪꜱ ᴀʟɪᴠᴇ 🥀 ᴀɴᴅ ᴡᴏʀᴋɪɴɢ ғɪɴᴇ
