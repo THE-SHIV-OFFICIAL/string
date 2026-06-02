@@ -1,4 +1,5 @@
-from config import START_IMG
+import random
+from config import START_IMG_URL
 from pyrogram.types import Message
 from telethon import TelegramClient
 from pyrogram import Client, filters
@@ -59,8 +60,14 @@ gen_button = [
 
 @Client.on_message(filters.private & ~filters.forwarded & filters.command(["generate", "gen", "string", "str"]))
 async def main(_, msg: Message):
+    # ✅ Random image fetch karne ka logic add kiya
+    if isinstance(START_IMG_URL, list):
+        start_img = random.choice(START_IMG_URL)
+    else:
+        start_img = START_IMG_URL
+
     await msg.reply_photo(
-        photo=START_IMG,  
+        photo=start_img,  
         caption=ask_ques,
         reply_markup=InlineKeyboardMarkup(buttons_ques)
     )
