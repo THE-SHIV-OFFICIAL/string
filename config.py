@@ -23,7 +23,7 @@ MONGO_DB_URI = getenv("MONGO_DB_URI", "")
 MUST_JOIN = getenv("MUST_JOIN", "betabot_hub")
 
 # ✅ Log Group ID Added
-LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1003255930328"))
+LOG_GROUP_ID = getenv("LOG_GROUP_ID", "istubabyhothaibabyyyyyyyyyyyyyyy")
 
 # ✅ Added your new images to the list
 START_IMG_URL = [
