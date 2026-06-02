@@ -40,8 +40,24 @@ if __name__ == "__main__":
         logging.error(f"An unexpected error occurred: {e}")
         raise
 
-    uname = app.get_me().username
+    me = app.get_me()
+    uname = me.username
     print(f"@{uname} NOW STRANGER SESSION GEN IS READY TO GEN SESSION")
+    
+    # --- LOG GROUP MESSAGE (STARTUP LOG) ---
+    # getattr use kar rahe hain taaki agar config me LOG_GROUP_ID na ho toh bot crash na kare
+    LOG_GROUP_ID = getattr(config, "LOG_GROUP_ID", None)
+    
+    if LOG_GROUP_ID:
+        try:
+            app.send_message(
+                LOG_GROUP_ID,
+                f"**🤖 ʙᴏᴛ sᴛᴀʀᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ!**\n\n**✨ ʙᴏᴛ:** @{uname}\n**👤 ᴏᴡɴᴇʀ ɪᴅ:** `{config.OWNER_ID}`\n**🤞 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ➛ BETA BOT HUB.🙂❤️**"
+            )
+            logging.info("Startup log sent to Log Group successfully.")
+        except Exception as e:
+            logging.error(f"Log Group Message Failed! Make sure the bot is an Admin in the Log Group. Error: {e}")
+    # ----------------------------------------
     
     idle()
     
