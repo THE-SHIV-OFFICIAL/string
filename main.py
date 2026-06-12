@@ -1,6 +1,16 @@
 import config
 import time
 import logging
+import asyncio # ✅ Added asyncio import
+
+# ✅ --- ASYNCIO EVENT LOOP FIX FOR PYTHON 3.12+ ---
+try:
+    loop = asyncio.get_event_loop()
+except RuntimeError:
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+# --------------------------------------------------
+
 from pyrogram import Client, idle
 from pyromod import listen  
 from pyrogram.errors import ApiIdInvalid, ApiIdPublishedFlood, AccessTokenInvalid
