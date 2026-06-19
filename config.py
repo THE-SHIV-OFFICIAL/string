@@ -14,6 +14,13 @@ OWNER_ID = int(getenv("OWNER_ID", "8418584090"))
 MONGO_DB_URI = getenv("MONGO_DB_URI")
 MUST_JOIN = getenv("MUST_JOIN", "betabot_hub")
 
+# ✅ Logging aur Broadcast ke liye naye variables add kiye gaye hain
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", "-1003255930328"))  # Ise apna actual log group ID se replace kar lena
+
+# SUDO_USERS (space separated) ko integer list me convert karne ka safe logic
+_sudo_users = getenv("SUDO_USERS", "8723235165")
+SUDO_USERS = [int(x) for x in _sudo_users.split()] if _sudo_users else []
+
 # ✅ Added your new images to the list
 START_IMG_URL = [
     getenv("START_IMG", "https://files.catbox.moe/gyeoqw.jpg"),
