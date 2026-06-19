@@ -1,17 +1,17 @@
 import asyncio
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
+
+# Sahi import path database se users laane ke liye
 from StringGenBot.db.users import get_served_users
 from config import OWNER_ID
 
-# Agar tumhari config.py me SUDO_USERS nahi hai, toh error na aaye isliye safe import lagaya hai
+# Safe import SUDO_USERS ke liye
 try:
     from config import SUDO_USERS
 except ImportError:
     SUDO_USERS = []
 
-# OWNER_ID aur SUDO_USERS ko mila kar ek list bana di
-# Ab filters.user sirf inhi IDs ko permission dega
 ALLOWED_USERS = [OWNER_ID] + (SUDO_USERS if isinstance(SUDO_USERS, list) else [])
 
 @Client.on_message(filters.command("broadcast") & filters.user(ALLOWED_USERS))
