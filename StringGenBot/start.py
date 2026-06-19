@@ -4,9 +4,9 @@ from pyrogram import Client, filters
 from pyrogram.enums import ChatAction
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery
 
-# Config aur DB se naye imports add kar diye hain
+# Config aur DB se naye imports (Sahi path ke sath)
 from config import START_IMG_URL, OWNER_ID, SUPPORT_CHAT, UPDATE_CHANNEL, LOG_GROUP_ID
-from StringGenBot.db import add_served_user
+from StringGenBot.db.users import add_served_user
 
 # Custom Filters
 def filter_cmd(cmd: str):
