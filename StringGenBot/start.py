@@ -3,8 +3,10 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.enums import ChatAction
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery
-# START_IMG_URL ko config se import kar liya hai
-from config import START_IMG_URL, OWNER_ID, SUPPORT_CHAT, UPDATE_CHANNEL
+
+# Config aur DB se naye imports add kar diye hain
+from config import START_IMG_URL, OWNER_ID, SUPPORT_CHAT, UPDATE_CHANNEL, LOG_GROUP_ID
+from StringGenBot.db import add_served_user
 
 # Custom Filters
 def filter_cmd(cmd: str):
@@ -12,6 +14,25 @@ def filter_cmd(cmd: str):
 
 @Client.on_message(filter_cmd("start"))
 async def start(bot: Client, msg: Message):
+    # --- DATABASE & LOGGING LOGIC ---
+    user_id = msg.from_user.id
+    
+    # DB me user add karega, naya hua toh log bhejega
+    is_new_user = await add_served_user(user_id)
+    
+    if is_new_user:
+        log_text = (
+            f"🆕 **Naya User Aaya!**\n\n"
+            f"👤 **Naam:** {msg.from_user.mention}\n"
+            f"🆔 **ID:** `{user_id}`\n"
+            f"🤖 **Bot:** String Gen Bot"
+        )
+        try:
+            await bot.send_message(LOG_GROUP_ID, log_text)
+        except Exception as e:
+            print(f"Log bhejne me error: {e}")
+    # --------------------------------
+
     # --- LOADING ANIMATION ---
     loading_msg = await msg.reply_text("<b>ᴌᴏᴀᴅɪɴɢ....</b>")
     await asyncio.sleep(0.3)
